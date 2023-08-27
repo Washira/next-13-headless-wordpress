@@ -1,3 +1,5 @@
+import { gql } from '@apollo/client'
+import client from '@/client'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 
@@ -119,9 +121,20 @@ export default function Home(props) {
 }
 
 export const getStaticProps = async () => {
+  const { data } = await client.query({
+    query: gql`
+      query NewQuery {
+        pages {
+          nodes {
+            title
+          }
+        }
+      }
+    `,
+  })
   return {
     props: {
-      // interStyles: inter.styles,
+      data,
       myexampleprop: 'hello',
     },
   }
